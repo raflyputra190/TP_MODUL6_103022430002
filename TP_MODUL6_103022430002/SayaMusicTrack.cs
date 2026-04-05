@@ -19,9 +19,23 @@ class SayaMusicTrack
     // Method untuk menambah play count
     public void IncreasePlayCount(int count)
     {
-        int currentPlayCount = int.Parse(this.playCount);
-        currentPlayCount += count;
-        this.playCount = currentPlayCount.ToString();
+        // Design by Contract: Precondition checks
+        if (this.title.Length > 100)
+            throw new ArgumentException("Judul track tidak boleh lebih dari 100 karakter.");
+
+        if (this.title == null)
+            throw new ArgumentNullException("Judul track tidak boleh null.");
+
+        if (count > 10000000)
+            throw new ArgumentException("Penambahan play count melebihi batas maksimum.");
+
+        // Menggunakan 'checked' untuk memastikan tidak ada overflow
+        checked
+        {
+            int currentPlayCount = int.Parse(this.playCount);
+            currentPlayCount += count;
+            this.playCount = currentPlayCount.ToString();
+        }
     }
 
     // Method untuk mencetak track details
